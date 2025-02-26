@@ -2,16 +2,6 @@
 // Koneksi ke database
 $koneksi = mysqli_connect('localhost', 'root', '', 'tugas_ukk');
 
-<<<<<<< HEAD
-// Tambah List
-if (isset($_POST['add_list'])) {
-    $list_name = mysqli_real_escape_string($koneksi, $_POST['list_name']);
-    mysqli_query($koneksi, "INSERT INTO lists (name) VALUES ('$list_name')");
-    echo "<script>window.location.href='index.php';</script>";
-}
-
-=======
->>>>>>> 44c3a06 (first commit)
 // Edit List
 if (isset($_POST['edit_list'])) {
     $list_id = intval($_POST['list_id']);
@@ -47,12 +37,8 @@ if (isset($_POST['edit_task'])) {
     $due_date = $_POST['due_date'];
     
     mysqli_query($koneksi, "UPDATE tasks SET task='$task', priority='$priority', due_date='$due_date' WHERE id='$task_id'");
-<<<<<<< HEAD
-    echo "<script>window.location.href='index.php';</script>";
-=======
    //mysqli_query($koneksi, "UPDATE tasks SET task='$task' WHERE id='$task_id'");
    echo "<script>window.location.href='index.php';</script>";
->>>>>>> 44c3a06 (first commit)
 }
 
 // Hapus Task
@@ -65,11 +51,7 @@ if (isset($_GET['delete_task'])) {
 // Tandai Task Selesai
 if (isset($_GET['done_task'])) {
     $task_id = $_GET['done_task'];
-<<<<<<< HEAD
-    mysqli_query($koneksi, "UPDATE tasks SET status='Selesai' WHERE id='$task_id'");
-=======
     mysqli_query($koneksi, "UPDATE tasks SET status='1' WHERE id='$task_id'");
->>>>>>> 44c3a06 (first commit)
     echo "<script>window.location.href='index.php';</script>";
 }
 
@@ -79,11 +61,15 @@ $lists = mysqli_query($koneksi, "SELECT * FROM lists");
 // Ambil Task
 $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM tasks 
                                  JOIN lists ON tasks.list_id = lists.id 
-<<<<<<< HEAD
-                                 ORDER BY status ASC, priority DESC, due_date ASC");
-=======
                                  ORDER BY FIELD(status, '0', '1'), priority DESC, due_date ASC");
->>>>>>> 44c3a06 (first commit)
+?>
+
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -93,34 +79,12 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<<<<<<< HEAD
-</head>
-<body>
-
-<div class="container mt-3">
-    <h2 class="text-center">Aplikasi To-Do List</h2>
-
-    <div class="row">
-        <!-- Tambah List -->
-        <div class="col-md-6">
-            <div class="border p-3 bg-light">
-                <h5>Tambah List</h5>
-                <form method="POST">
-                    <input type="text" name="list_name" class="form-control" placeholder="Masukkan nama list" required>
-                    <button type="submit" class="btn btn-primary w-100 mt-2" name="add_list">Tambah List</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Tambah Task -->
-        <div class="col-md-6">
-=======
     <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
 <nav class="navbar shadhow-lg fixed-top">
-        <div class="container">
+<div class="container">
     <a class="navbar-brand fw-bold" href="#">To Do List Apps</a>
     <div class="ms-auto">
         <a href="index.php" class="text-decoration-none mx-3">Home</a>
@@ -129,13 +93,13 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
 
     </div>
 </nav>
-</nav>
+
 <div class="container mt-3">   
     <div class="row">
+        
         <!-- Tambah Task -->
         <div class="container-fluid tambah-list pt-5 pb-5">
      <div class="container text-center"> <br>
->>>>>>> 44c3a06 (first commit)
             <div class="border p-3 bg-light">
                 <h5>Tambah Task</h5>
                 <form method="POST">
@@ -184,29 +148,6 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
                         <td>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editTaskModal<?= $task['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                             <a href="?delete_task=<?= $task['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus task ini?')">Delete</a>
-<<<<<<< HEAD
-                            <a href="?done_task=<?= $task['id']; ?>" class="btn btn-success btn-sm">Selesai</a>
-                        </td>
-                    </tr>
-
-                    <!-- Modal Edit Task -->
-                    <div class="modal fade" id="editTaskModal<?= $task['id']; ?>" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Edit Task</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST">
-                                        <input type="hidden" name="task_id" value="<?= $task['id']; ?>">
-                                        <input type="text" name="task" class="form-control" value="<?= $task['task']; ?>" required>
-                                        <button type="submit" class="btn btn-primary mt-2" name="edit_task">Simpan Perubahan</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-=======
 
                             <?php if ($task['status'] == 0) : ?>
                                 <a href="?done_task=<?= $task['id']; ?>" class="btn btn-success btn-sm" style="background-color: blue;">Selesai</a>
@@ -258,7 +199,6 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
         </div>
     </div>
 </div>
->>>>>>> 44c3a06 (first commit)
                     </div>
                 <?php endwhile; ?>
             </tbody>
@@ -268,8 +208,4 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 44c3a06 (first commit)
