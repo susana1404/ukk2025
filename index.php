@@ -64,14 +64,6 @@ $tasks = mysqli_query($koneksi, "SELECT tasks.*, lists.name AS list_name FROM ta
                                  ORDER BY FIELD(status, '0', '1'), priority DESC, due_date ASC");
 ?>
 
-<?php
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -90,13 +82,12 @@ if (!isset($_SESSION['username'])) {
         <a href="index.php" class="text-decoration-none mx-3">Home</a>
         <a href="tambah_list.php" class="text-decoration-none mx-3">Tambah List</a>
         <a href="logout.php" style="text-decoration: none; color: red; font-weight: bold;">Logout</a>
-
-    </div>
-</nav>
-
+            </li>
+           </ul>
+        </div>
+    </nav>
 <div class="container mt-3">   
     <div class="row">
-        
         <!-- Tambah Task -->
         <div class="container-fluid tambah-list pt-5 pb-5">
      <div class="container text-center"> <br>
